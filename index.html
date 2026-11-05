@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>the listening shelf</title>
-<meta name="description" content="A small shelf of podcasts worth your hours on AI engineering, LLMs and inference - each with the evidence for why it earned its place.">
+<meta name="description" content="A browsable shelf of podcasts worth your hours on AI engineering, LLMs and inference - each with the evidence for why it earned its place.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
@@ -91,6 +91,10 @@
     .why{font-size:1.08rem}
   }
   @media (prefers-reduced-motion: reduce){*{transition-duration:.01s !important}}
+
+.browse{margin:24px 4px 22px;scroll-margin-top:16px}.intro{font-size:1.2rem;line-height:1.5;margin-bottom:20px}.browse label{display:block;font-size:.88rem;font-weight:600;margin-bottom:8px}input,select{font:inherit;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:12px;min-height:48px;width:100%;padding:10px 12px}input{margin-bottom:16px}.filters{display:grid;grid-template-columns:1fr 1fr;gap:12px}.filters select{margin-top:8px;font-size:.92rem}#resultCount{font-size:.8rem;line-height:1.5;color:var(--ink-soft);margin-top:10px}.textbtn{border:0;background:none;font:inherit;font-size:.85rem;min-height:44px;color:var(--red-deep);text-decoration:underline;cursor:pointer}.episode-meta{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--red-deep);margin-bottom:10px}.duration{font-size:.78rem;color:var(--ink-soft);margin-top:7px}.card h2{font-size:1.3rem;line-height:1.25}.host{font-size:1.08rem;line-height:1.4;margin-top:8px}.why{font-size:.96rem}.card.heard{opacity:1;transform:none;border-left:4px solid var(--red)}details{margin-top:12px;border-top:1px solid var(--line)}summary{cursor:pointer;min-height:48px;padding:14px 0;font-size:.87rem;font-weight:600;color:var(--red-deep)}.evidence-content{font-size:.83rem;line-height:1.6;padding-bottom:8px}.actions{flex-wrap:wrap}.play{font-size:.86rem;padding:13px 12px;min-height:48px;min-width:130px}.heardbtn{font-size:1rem;min-height:48px;padding:12px 14px}.pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 4px}.pager button{font:inherit;font-size:.9rem;background:var(--cream);border:1px solid var(--line);border-radius:99px;padding:12px 16px;min-height:48px;cursor:pointer}.pager button:disabled{opacity:.4;cursor:default}.empty{padding:32px 4px;line-height:1.6}:focus-visible{outline:3px solid var(--red);outline-offset:3px}.wordmark{font-size:1.9rem}#tally{font-size:1.15rem}
+@media(max-width:350px){header{align-items:flex-start;flex-direction:column;gap:2px}.actions{flex-direction:column;align-items:stretch}.wrap{padding-left:16px;padding-right:16px}.card{padding:20px 18px}.filters{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -100,9 +104,15 @@
     <div id="tally"></div>
   </header>
   <div class="tallybar"><i id="tallyFill"></i></div>
-  <main id="shelf"></main>
+  <section class="browse" aria-label="Browse the shelf">
+<p class="intro">Follow the idea you want to understand next.</p>
+<label for="search">Find an episode</label><input id="search" type="search" placeholder="Try KV cache, evals, Jason Liu..." autocomplete="off">
+<div class="filters"><label>Topic<select id="topic"><option value="">All topics</option></select></label><label>Progress<select id="status"><option value="">All picks</option><option value="unheard">Not listened</option><option value="heard">Listened</option></select></label></div>
+<p id="resultCount" role="status" aria-live="polite"></p>
+<button id="reset" class="textbtn">Reset filters</button>
+</section><main id="shelf"></main><nav class="pager" aria-label="Shelf pages"><button id="prev">Previous</button><span id="pageLabel"></span><button id="next">Next</button></nav>
   <div class="bottomline">evidence over hype. press play.</div>
-  <div class="fineprint">How a pick earns its place: a named episode, its primary source (episode page, show notes or transcript) saying what you will learn, and - labeled separately - the community threads that recommend it. "Listened" marks stay on this device. YouTube Music buttons open the episode in YouTube Music on the web; whether your phone hands it to the app is up to your device. Video links are title-checked against YouTube.</div>
+  <div class="fineprint">13 named episodes with primary-source learning notes, plus 3 broader discovery picks, labeled individually. Primary evidence explains the learning value; community links are separate show-level signals unless explicitly stated otherwise. A community recommendation is not proof of episode quality. Recorded claims and tools may have changed since an episode aired. "Listened" marks stay in this browser, not across devices. Existing marks are preserved. Music buttons open YouTube Music on the web; native-app handoff depends on your phone. Other buttons open the exact episode source or a clearly labeled discovery destination. Updated 5 Nov 2026.</div>
 </div>
 
 <script>
@@ -158,7 +168,7 @@ const SHOWS=[
 { id:"ai-daily-brief", sec:"the daily pulse",
   show:"The AI Daily Brief", host:"Nathaniel Whittemore",
   tags:["news","daily","context"],
-  learn:"Twenty minutes of analysis a day, not headline-reading. This week's run: how the midterm results change AI (data centers were the ballot issue), recursive self-improvement, and 400 years of 'AI makes minds useless' panics.",
+  learn:"A broader discovery source for short AI news analysis. Browse the current episode list and check its date and sources; no single episode here has passed the same learning-evidence check as the 13 named picks.",
   ev:[["aidailybrief.ai","https://aidailybrief.ai/"],["community: r/Anthropic","https://www.reddit.com/r/Anthropic/comments/1vzcg5v/what_airelated_podcasts_can_you_recommend/"],["community: r/ArtificialInteligence","https://www.reddit.com/r/ArtificialInteligence/comments/1e4ez5w/what_podcasts_are_you_listening_to/"]],
   start:{t:"Today's episode, whatever it is",m:"daily - the habit, not a single classic"},
   play:{label:"Play the show",url:"https://www.youtube.com/@AIDailyBrief"} },
@@ -172,53 +182,49 @@ const SHOWS=[
   play:{label:"Play the channel",url:"https://www.youtube.com/@aiexplained-official"} }
 ];
 
+SHOWS.push(...[{"id": "baseten-inference", "sec": "more to learn", "show": "Latent Space", "host": "Philip Kiely & Ali Taha (Baseten)", "tags": ["inference", "systems"], "learn": "Follow a 200K-token request through cache-aware routing, prefill/decode disaggregation, quantization, speculative decoding and model parallelism. Useful for reasoning about latency, throughput and fidelity together.", "ev": [["primary episode & learning evidence", "https://latent.space/p/inference-eng/"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "The Inference Engineering Masterclass", "m": "Aug 2026 \u00b7 101 min"}, "play": {"label": "Open the episode", "url": "https://latent.space/p/inference-eng/"}, "note": "Start at 00:03:18 for speculative decoding; 00:28:22 for quantization."}, {"id": "evals-hamel-shreya", "sec": "more to learn", "show": "Latent Space", "host": "Hamel Husain & Shreya Shankar", "tags": ["evals", "production"], "learn": "Learn a repeatable error-analysis loop, how to ground synthetic test data, why an LLM judge needs agreement checks against a domain expert, and when a custom annotation UI helps.", "ev": [["primary episode & learning evidence", "https://www.youtube.com/watch?v=mpJG3Dc6Fn4"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "Evals: How to Improve AI Consistently", "m": "Mar 2025 \u00b7 practical evaluation"}, "play": {"label": "Open the episode", "url": "https://www.youtube.com/watch?v=mpJG3Dc6Fn4"}, "note": "The primary transcript explains why generic judge benchmarks do not establish quality on your own tasks."}, {"id": "instructor-jason", "sec": "more to learn", "show": "Latent Space", "host": "Jason Liu (Instructor)", "tags": ["AI engineering", "agents"], "learn": "Understand typed responses, JSON mode versus function calling, query understanding for retrieval, and why explicit workflows can be easier to control than open-ended agent loops.", "ev": [["primary episode & learning evidence", "https://latent.space/p/instructor/"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "High Agency Pydantic > VC Backed Frameworks", "m": "Apr 2024 \u00b7 52 min"}, "play": {"label": "Open the episode", "url": "https://latent.space/p/instructor/"}, "note": "11:12 compares JSON mode and function calling; 22:42 moves from loops to workflows. APIs discussed are historical, not a current setup guide."}, {"id": "twiml-rag-jason", "sec": "more to learn", "show": "TWIML AI Podcast \u00b7 EP.709", "host": "Jason Liu with Sam Charrington", "tags": ["RAG", "evals"], "learn": "Diagnose retrieval failures with test datasets and data-driven experiments. Compare chunking choices, evaluation metrics for different tasks, and where fine-tuning fits instead of changing a framework blindly.", "ev": [["primary episode & learning evidence", "https://twimlai.com/podcast/twimlai/why-your-rag-system-is-broken-and-how-to-fix-it"]], "start": {"t": "Why Your RAG System Is Broken, and How to Fix It", "m": "Nov 2024 \u00b7 diagnostic approach"}, "play": {"label": "Open the episode", "url": "https://twimlai.com/podcast/twimlai/why-your-rag-system-is-broken-and-how-to-fix-it"}, "note": "The primary episode description explicitly covers failure diagnosis, chunking, test data and fine-tuning. No direct Music destination verified."}, {"id": "answerai-howard", "sec": "more to learn", "show": "Latent Space", "host": "Jeremy Howard (Answer.AI)", "tags": ["training", "inference"], "learn": "Explore memory-efficient fine-tuning with FSDP, QLoRA and QDoRA, KV-cache compression, and how a small research team chooses practical problems. Separate the engineering ideas from the promotional title.", "ev": [["primary episode & learning evidence", "https://latent.space/p/answerai/"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "AI Magic: Shipping 1000s of successful products with no managers and a team of 12", "m": "Aug 2024 \u00b7 59 min"}, "play": {"label": "Open the episode", "url": "https://latent.space/p/answerai/"}, "note": "31:57 covers fine-tuning methods; 36:36 covers inference optimization. Tool and hardware details reflect the recording date."}, {"id": "modular-lattner", "sec": "more to learn", "show": "Latent Space", "host": "Chris Lattner (Modular / Mojo)", "tags": ["systems", "inference"], "learn": "Connect GPU programming, Mojo, the MAX inference runtime and cluster-scale serving. Learn where compiler design meets kernels, hardware portability and serving frameworks.", "ev": [["primary episode & learning evidence", "https://latent.space/p/modular-2025/"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "The Shape of Compute", "m": "Jun 2025 \u00b7 compiler-to-serving stack"}, "play": {"label": "Open the episode", "url": "https://latent.space/p/modular-2025/"}, "note": "12:52 covers Mojo; 18:25 connects it to cluster-scale inference; 32:25 compares the approach with vLLM and SGLang. Performance statements are the guest/vendor perspective."}, {"id": "nvidia-dynamo", "sec": "more to learn", "show": "Latent Space", "host": "Kyle Kranen & Nader Khalil (NVIDIA)", "tags": ["systems", "inference", "agents"], "learn": "Understand why inference scales out, why prefill and decode can run separately, how Kubernetes orchestration fits, and how serving choices trade cost, latency and quality.", "ev": [["primary episode & learning evidence", "https://www.latent.space/p/nvidia-brev-dynamo"], ["community: show recommendation (not this episode)", "https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"]], "start": {"t": "NVIDIA's AI Engineers: Agent Inference at Planetary Scale and Speed of Light", "m": "Mar 2026 \u00b7 datacenter-scale serving"}, "play": {"label": "Open the episode", "url": "https://www.latent.space/p/nvidia-brev-dynamo"}, "note": "27:38 covers scale-out; 38:42 prefill/decode disaggregation; 43:20 long context and model/hardware co-design. NVIDIA practitioner perspective, not an independent benchmark."}, {"id": "dwarkesh-sholto-trenton", "sec": "more to learn", "show": "Dwarkesh Podcast", "host": "Sholto Douglas & Trenton Bricken", "tags": ["training", "research"], "learn": "Compare reinforcement learning, continual learning and mechanistic interpretability. Hear what researchers think inference compute may bottleneck, rather than treating their AGI forecasts as established facts.", "ev": [["primary episode & learning evidence", "https://www.dwarkesh.com/p/sholto-trenton-2"]], "start": {"t": "How Does Claude 4 Think?", "m": "May 2025 \u00b7 frontier research"}, "play": {"label": "Open the episode", "url": "https://www.dwarkesh.com/p/sholto-trenton-2"}, "note": "00:00 RL scaling; 16:27 continual learning; 1:18:55 inference compute; 1:45:38 mechanistic interpretability. Forecasts are opinions from May 2025."}]);
+SHOWS.find(s=>s.id==='evals-hamel-shreya').play={label:'Play in YouTube Music',url:'https://music.youtube.com/watch?v=mpJG3Dc6Fn4',ytm:true};
+SHOWS.find(s=>s.id==='evals-hamel-shreya').start.m='Mar 2025 · 27 min';
 const KEY="shelf.listened.v1";
-let heard=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));
-function save(){ localStorage.setItem(KEY,JSON.stringify([...heard])); }
-
-const shelf=document.getElementById("shelf");
-let lastSec=null;
-SHOWS.forEach(s=>{
-  if(s.sec!==lastSec){
-    lastSec=s.sec;
-    const h=document.createElement("div");h.className="sec";h.textContent=s.sec;shelf.appendChild(h);
-  }
-  const c=document.createElement("article");c.className="card";c.id="c-"+s.id;
-  const tags=s.tags.map(t=>`<i>${t}</i>`).join("");
-  const ev=s.ev.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${l}</a>`).join(" · ");
-  c.innerHTML=`
-    <div class="stamp">heard</div>
-    <h2>${s.show}</h2>
-    <div class="host">${s.host}</div>
-    <div class="tags">${tags}</div>
-    <p class="why">${s.learn}</p>
-    <div class="ev">${ev}</div>
-    <div class="start"><div class="k">start with</div><div class="t">${s.start.t}</div><div class="m">${s.start.m}</div></div>
-    <div class="actions">
-      <a class="play${s.play.ytm?"":" alt"}" href="${s.play.url}" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>${s.play.label}
-      </a>
-      <button class="heardbtn" data-id="${s.id}">listened</button>
-    </div>`;
-  shelf.appendChild(c);
-});
+let heard;
+try { heard=new Set(JSON.parse(localStorage.getItem(KEY)||"[]")); } catch { heard=new Set(); }
+let page=0; const pageSize=6;
+const discovery=new Set(['agentic','ai-daily-brief','ai-explained']);
+const shelf=document.getElementById('shelf');
+const topic=document.getElementById('topic'),status=document.getElementById('status'),search=document.getElementById('search');
+[...new Set(SHOWS.flatMap(s=>s.tags))].sort().forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;topic.appendChild(o)});
+function save(){try{localStorage.setItem(KEY,JSON.stringify([...heard]));}catch{document.getElementById('resultCount').textContent='Storage unavailable: progress lasts only until this page closes.'}}
+function esc(t){return String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function paint(){
-  SHOWS.forEach(s=>{
-    const c=document.getElementById("c-"+s.id);
-    c.classList.toggle("heard",heard.has(s.id));
-    c.querySelector(".heardbtn").textContent=heard.has(s.id)?"heard it":"listened";
-  });
-  const n=heard.size,total=SHOWS.length;
-  document.getElementById("tally").innerHTML= n? `<b>${n}</b> of ${total} heard` : `${total} shows`;
-  document.getElementById("tallyFill").style.width=(n/total*100)+"%";
+ const q=search.value.trim().toLowerCase();
+ const matches=SHOWS.filter(s=>(!topic.value||s.tags.includes(topic.value))&&(!status.value||(status.value==='heard')===heard.has(s.id))&&(!q||[s.show,s.host,s.start.t,s.learn,...s.tags].join(' ').toLowerCase().includes(q)));
+ const pages=Math.max(1,Math.ceil(matches.length/pageSize));page=Math.min(page,pages-1);
+ shelf.innerHTML='';
+ matches.slice(page*pageSize,(page+1)*pageSize).forEach(s=>{
+ const c=document.createElement('article');c.className='card'+(heard.has(s.id)?' heard':'');c.id='c-'+s.id;
+ const n=SHOWS.indexOf(s)+1;
+ c.innerHTML=`<div class="episode-meta">${String(n).padStart(2,'0')} / ${discovery.has(s.id)?'discovery pick':'episode'}</div>
+ <h2>${esc(s.start.t)}</h2><div class="host">${esc(s.show)} · ${esc(s.host)}</div><p class="duration">${esc(s.start.m)}</p>
+ <div class="tags">${s.tags.map(t=>`<i>${esc(t)}</i>`).join('')}</div>
+ <p class="why">${esc(s.learn)}</p>
+ <details><summary>Evidence & listening notes</summary><div class="evidence-content"><p>${esc(s.note||(discovery.has(s.id)?'Broader discovery pick: not counted among the 13 source-backed episodes. The destination may be a show or channel, not a pinned episode.':'Primary episode content supports the learning note. Community links below recommend the show, not necessarily this episode.'))}</p>
+ <div class="ev">${s.ev.map(([l,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(l)}</a>`).join(' · ')}</div></div></details>
+ <div class="actions"><a class="play${s.play.ytm?'':' alt'}" href="${esc(s.play.url)}" target="_blank" rel="noopener">${esc(s.play.label)}</a><button class="heardbtn" data-id="${s.id}" aria-pressed="${heard.has(s.id)}">${heard.has(s.id)?'Heard it ✓':'Mark listened'}</button></div>`;
+ shelf.appendChild(c);
+ });
+ if(!matches.length)shelf.innerHTML='<div class="empty"><h2>No matches yet</h2><p>Try a different word or reset the filters.</p></div>';
+ const n=SHOWS.filter(s=>heard.has(s.id)).length;
+ document.getElementById('tally').textContent=n+' / '+SHOWS.length+' heard';
+ document.getElementById('tallyFill').style.width=(n/SHOWS.length*100)+'%';
+ document.getElementById('resultCount').textContent=matches.length+' of '+SHOWS.length+' picks · 13 episodes + 3 discovery picks';
+ document.getElementById('pageLabel').textContent=(page+1)+' / '+pages;
+ document.getElementById('prev').disabled=page===0;document.getElementById('next').disabled=page>=pages-1;
 }
-document.getElementById("shelf").addEventListener("click",e=>{
-  const b=e.target.closest(".heardbtn"); if(!b)return;
-  const id=b.dataset.id;
-  heard.has(id)?heard.delete(id):heard.add(id);
-  save();paint();
-});
+function filters(){page=0;paint()}
+search.addEventListener('input',filters);topic.addEventListener('change',filters);status.addEventListener('change',filters);
+document.getElementById('reset').onclick=()=>{search.value='';topic.value='';status.value='';filters()};
+function go(delta){page+=delta;paint();document.querySelector('.browse').scrollIntoView({behavior:'auto',block:'start'})}
+document.getElementById('prev').onclick=()=>go(-1);document.getElementById('next').onclick=()=>go(1);
+shelf.addEventListener('click',e=>{const b=e.target.closest('.heardbtn');if(!b)return;const id=b.dataset.id;heard.has(id)?heard.delete(id):heard.add(id);save();paint()});
 paint();
-</script>
-</body>
-</html>
+</script></body></html>
