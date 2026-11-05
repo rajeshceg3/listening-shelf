@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>the listening shelf</title>
+<meta name="description" content="A small shelf of podcasts worth your hours on AI engineering, LLMs and inference - each with the evidence for why it earned its place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3e9d7; --paper-deep:#eaddc4; --ink:#2a211b; --ink-soft:#6b5847;
+    --red:#c23616; --red-deep:#9e2a10; --cream:#fbf4e6; --line:#ddcaa6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(ellipse at 15% 0%, rgba(255,252,244,.75), transparent 55%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.12 0 0 0 0 0.08 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    color:var(--ink);font-family:'Fraunces',serif;min-height:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px calc(90px + env(safe-area-inset-bottom))}
+  header{padding:calc(28px + env(safe-area-inset-top)) 4px 6px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+  .wordmark{font-family:'Caveat',cursive;font-size:2.1rem;font-weight:700;color:var(--ink);transform:rotate(-1.5deg)}
+  #tally{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--ink-soft);white-space:nowrap}
+  #tally b{color:var(--red);font-size:1.6rem}
+  .tallybar{height:4px;border-radius:99px;background:var(--paper-deep);margin:8px 4px 0;overflow:hidden}
+  .tallybar i{display:block;height:100%;width:0;background:var(--red);border-radius:99px;transition:width .6s cubic-bezier(.34,1.3,.64,1)}
+  .sec{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--ink-soft);margin:34px 4px 12px;transform:rotate(-.8deg)}
+  .card{
+    position:relative;background:var(--cream);border-radius:22px;padding:22px 22px 18px;margin-bottom:16px;
+    box-shadow:0 10px 22px rgba(90,64,32,.16), inset 0 2px 3px rgba(255,255,255,.85), inset 0 -3px 8px rgba(90,64,32,.07);
+    transition:transform .35s cubic-bezier(.34,1.4,.64,1), opacity .35s, box-shadow .35s;
+  }
+  .card.heard{transform:rotate(-.7deg) scale(.985);opacity:.62;box-shadow:0 4px 10px rgba(90,64,32,.12)}
+  .card h2{font-size:1.5rem;font-weight:900;line-height:1.15;letter-spacing:-.01em}
+  .host{font-family:'Caveat',cursive;font-size:1.2rem;color:var(--ink-soft);margin-top:2px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+  .tags i{
+    font-style:normal;font-size:.72rem;font-weight:600;letter-spacing:.04em;color:var(--ink-soft);
+    border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;
+  }
+  .why{margin-top:12px;font-size:1.02rem;font-weight:300;line-height:1.5}
+  .why b{font-weight:600}
+  .ev{margin-top:9px;font-size:.85rem;line-height:1.45;color:var(--ink-soft)}
+  .ev a{color:var(--red-deep);text-decoration:none;border-bottom:1.5px solid var(--line);padding-bottom:1px}
+  .ev a:active{color:var(--red)}
+  .start{
+    margin-top:14px;padding:12px 14px;border-left:3px solid var(--red);border-radius:0 14px 14px 0;
+    background:rgba(194,54,22,.06);
+  }
+  .start .k{font-family:'Caveat',cursive;font-size:1.05rem;color:var(--red-deep)}
+  .start .t{font-weight:600;font-size:1rem;line-height:1.35;margin-top:1px}
+  .start .m{font-size:.82rem;color:var(--ink-soft);margin-top:2px}
+  .actions{display:flex;gap:10px;margin-top:16px;align-items:center}
+  .play{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+    font-family:'Fraunces',serif;font-weight:600;font-size:.98rem;color:var(--cream);text-decoration:none;
+    background:linear-gradient(180deg,#d34423,var(--red));border-radius:999px;padding:13px 18px;
+    box-shadow:0 7px 14px rgba(158,42,16,.32), inset 0 2px 3px rgba(255,255,255,.35), inset 0 -4px 8px rgba(90,20,5,.3);
+    transition:transform .15s cubic-bezier(.34,1.56,.64,1);
+  }
+  .play:active{transform:scale(.94)}
+  .play svg{width:15px;height:15px;fill:var(--cream);flex:none}
+  .play.alt{background:linear-gradient(180deg,#4a3c30,#352a20);box-shadow:0 7px 14px rgba(42,33,27,.3), inset 0 2px 3px rgba(255,255,255,.22), inset 0 -4px 8px rgba(0,0,0,.35)}
+  .heardbtn{
+    font-family:'Caveat',cursive;font-size:1.18rem;color:var(--ink-soft);background:var(--paper-deep);
+    border:none;border-radius:999px;padding:12px 18px;cursor:pointer;
+    box-shadow:inset 0 2px 4px rgba(90,64,32,.18), 0 2px 5px rgba(90,64,32,.12);
+    transition:transform .18s cubic-bezier(.34,1.9,.64,1), color .2s;
+  }
+  .heardbtn:active{transform:scale(.88)}
+  .card.heard .heardbtn{color:var(--red-deep)}
+  .stamp{
+    position:absolute;top:14px;right:16px;font-family:'Caveat',cursive;font-size:1.5rem;font-weight:700;
+    color:var(--red-deep);border:2.5px solid var(--red-deep);border-radius:10px;padding:1px 10px;
+    transform:rotate(8deg) scale(0);opacity:0;pointer-events:none;
+    transition:transform .3s cubic-bezier(.34,1.8,.64,1), opacity .2s;
+  }
+  .card.heard .stamp{transform:rotate(8deg) scale(1);opacity:.9}
+  .bottomline{
+    margin-top:44px;text-align:center;font-family:'Caveat',cursive;font-size:1.4rem;color:var(--ink-soft);
+    transform:rotate(-1deg);
+  }
+  .fineprint{margin-top:14px;text-align:center;font-size:.78rem;color:var(--ink-soft);line-height:1.5}
+  @media (min-width:900px){
+    .wrap{max-width:700px}
+    .card h2{font-size:1.7rem}
+    .why{font-size:1.08rem}
+  }
+  @media (prefers-reduced-motion: reduce){*{transition-duration:.01s !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="wordmark">the listening shelf</div>
+    <div id="tally"></div>
+  </header>
+  <div class="tallybar"><i id="tallyFill"></i></div>
+  <main id="shelf"></main>
+  <div class="bottomline">evidence over hype. press play.</div>
+  <div class="fineprint">How a pick earns its place: a named episode, its primary source (episode page, show notes or transcript) saying what you will learn, and - labeled separately - the community threads that recommend it. "Listened" marks stay on this device. YouTube Music buttons open the episode in YouTube Music on the web; whether your phone hands it to the app is up to your device. Video links are title-checked against YouTube.</div>
+</div>
+
+<script>
+const SHOWS=[
+{ id:"iltb-movva", sec:"the featured episode",
+  show:"Invest Like the Best, EP.488", host:"Neil Movva (ex-NVIDIA) with Patrick O'Shaughnessy",
+  tags:["inference","chips","economics"],
+  learn:"What inference actually costs and why it keeps falling: token demand, throughput versus latency, the market for AI chips, scavenging power others ignore, and open-source models collapsing the pricing edge - from an ex-NVIDIA engineer now building a 'token factory'.",
+  ev:[["episode page & timestamp map","https://colossus.com/episode/from-transistor-to-token/"],["Spotify listing","https://open.spotify.com/episode/7GZ9BixZYi6SIxvVRbYbNf"]],
+  start:{t:"Ex-NVIDIA Engineer: Why AI Is About to Get 1000x Cheaper",m:"1 h 24 min - the full conversation"},
+  play:{label:"Play in YouTube Music",url:"https://music.youtube.com/watch?v=uyzqxIoiobU",ytm:true} },
+
+{ id:"latent-space", sec:"the core shelf",
+  show:"Latent Space", host:"swyx & Alessio - the AI Engineer podcast",
+  tags:["AI engineering","agents","founders"],
+  learn:"The map of the field: Software 1.0/2.0/3.0, what an AI engineer is (consumes foundation-model APIs instead of training models), the RAG stack, and why this role grows out of ordinary software engineering.",
+  ev:[["episode show notes","https://latent.space/p/aies-podrocket/"],["community: r/LLMDevs","https://www.reddit.com/r/LLMDevs/comments/1nizjmr/what_are_your_favorite_ai_podcasts/"],["community: r/LocalLLaMA","https://www.reddit.com/r/LocalLLaMA/comments/1i75m1u/ai_news_recommendations/"]],
+  start:{t:"Swyx on Software 3.0 and the Rise of the AI Engineer",m:"39 min - the thesis episode"},
+  play:{label:"Listen on latent.space",url:"https://latent.space/p/aies-podrocket"} },
+
+{ id:"dwarkesh", sec:"the core shelf",
+  show:"Dwarkesh Podcast", host:"Dwarkesh Patel",
+  tags:["LLMs","frontier labs","deep dives"],
+  learn:"Karpathy on why agents are a decade, not a year: LLM cognitive deficits, why RL is terrible (but everything else is worse), how humans learn versus model collapse, and the future of education.",
+  ev:[["episode page & transcript","https://www.dwarkesh.com/p/andrej-karpathy"],["community: r/Codeium","https://www.reddit.com/r/Codeium/comments/1iofyzx/best_ai_podcasts/"]],
+  start:{t:"Andrej Karpathy - AGI is still a decade away",m:"Oct 2025 - 2 h, with full transcript"},
+  play:{label:"Play in YouTube Music",url:"https://music.youtube.com/watch?v=lXUZvyajciY",ytm:true} },
+
+{ id:"mlst", sec:"the core shelf",
+  show:"Machine Learning Street Talk", host:"Tim Scarfe & co.",
+  tags:["LLMs","research","rigour"],
+  learn:"Murray Shanahan (DeepMind) on what LLMs actually are: why people ascribe consciousness to them, how we anthropomorphize, 'exotic' minds, and how our language has to change to fit them.",
+  ev:[["episode transcript (YouTube)","https://www.youtube.com/watch?v=ztNdagyT8po"],["community: r/LocalLLaMA","https://www.reddit.com/r/LocalLLaMA/comments/1i75m1u/ai_news_recommendations/"]],
+  start:{t:"There are monsters in your LLM - Murray Shanahan",m:"deep technical, no hype"},
+  play:{label:"Play in YouTube Music",url:"https://music.youtube.com/watch?v=ztNdagyT8po",ytm:true} },
+
+{ id:"gradient-dissent", sec:"the core shelf",
+  show:"Gradient Dissent", host:"Lukas Biewald (Weights & Biases)",
+  tags:["LLMs","practitioners","tooling"],
+  learn:"Mike Knoop (Zapier co-founder, now Ndea) on the reasoning era: DeepSeek's R1, OpenAI's o-series, the ARC-AGI benchmark, and why program synthesis and deep learning have to merge.",
+  ev:[["episode description","https://www.youtube.com/watch?v=SSA8vNrFpXI"],["community: r/Codeium","https://www.reddit.com/r/Codeium/comments/1iofyzx/best_ai_podcasts/"],["W&B podcast page","https://wandb.ai/site/resources/podcast/"]],
+  start:{t:"Mike Knoop - R1, OpenAI's o3 and the ARC-AGI benchmark",m:"1 h 12 min"},
+  play:{label:"Play in YouTube Music",url:"https://music.youtube.com/watch?v=SSA8vNrFpXI",ytm:true} },
+
+{ id:"agentic", sec:"agents, in production",
+  show:"Agentic Conversations", host:"formerly the MLOps Community Podcast",
+  tags:["agents","production","MCP"],
+  learn:"MCP in production: observability, evals, tool design, code mode, authentication, and what breaks when agents start using your server at scale - plus how AWS thinks about MCP across 16,000 APIs.",
+  ev:[["show & episode page","https://home.mlops.community/public/content/collections/mlops-community-podcast"],["community: r/aiagents","https://www.reddit.com/r/aiagents/comments/1mo0mku/podcasts_that_helped_me_build_smarter_agents_not/"]],
+  start:{t:"AWS Has 16,000 APIs. Can MCP Handle It?",m:"Sep 2026 - the production side of tool protocols"},
+  play:{label:"Play the show",url:"https://www.youtube.com/c/MLOpscommunity"} },
+
+{ id:"ai-daily-brief", sec:"the daily pulse",
+  show:"The AI Daily Brief", host:"Nathaniel Whittemore",
+  tags:["news","daily","context"],
+  learn:"Twenty minutes of analysis a day, not headline-reading. This week's run: how the midterm results change AI (data centers were the ballot issue), recursive self-improvement, and 400 years of 'AI makes minds useless' panics.",
+  ev:[["aidailybrief.ai","https://aidailybrief.ai/"],["community: r/Anthropic","https://www.reddit.com/r/Anthropic/comments/1vzcg5v/what_airelated_podcasts_can_you_recommend/"],["community: r/ArtificialInteligence","https://www.reddit.com/r/ArtificialInteligence/comments/1e4ez5w/what_podcasts_are_you_listening_to/"]],
+  start:{t:"Today's episode, whatever it is",m:"daily - the habit, not a single classic"},
+  play:{label:"Play the show",url:"https://www.youtube.com/@AIDailyBrief"} },
+
+{ id:"ai-explained", sec:"the daily pulse",
+  show:"AI Explained", host:"Philip - video-first",
+  tags:["video","LLMs","measured takes"],
+  learn:"Calm, sourced video essays on model releases and AI claims, sceptical of hype in both directions. A channel-level pick on community strength - a single pinned episode will replace this once vetted.",
+  ev:[["community: r/ArtificialInteligence","https://www.reddit.com/r/ArtificialInteligence/comments/1e4ez5w/what_podcasts_are_you_listening_to/"],["community: r/LocalLLaMA","https://www.reddit.com/r/LocalLLaMA/comments/1i75m1u/ai_news_recommendations/"]],
+  start:{t:"The newest video on the channel",m:"~15-25 min each - pairs with a commute"},
+  play:{label:"Play the channel",url:"https://www.youtube.com/@aiexplained-official"} }
+];
+
+const KEY="shelf.listened.v1";
+let heard=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));
+function save(){ localStorage.setItem(KEY,JSON.stringify([...heard])); }
+
+const shelf=document.getElementById("shelf");
+let lastSec=null;
+SHOWS.forEach(s=>{
+  if(s.sec!==lastSec){
+    lastSec=s.sec;
+    const h=document.createElement("div");h.className="sec";h.textContent=s.sec;shelf.appendChild(h);
+  }
+  const c=document.createElement("article");c.className="card";c.id="c-"+s.id;
+  const tags=s.tags.map(t=>`<i>${t}</i>`).join("");
+  const ev=s.ev.map(([l,u])=>`<a href="${u}" target="_blank" rel="noopener">${l}</a>`).join(" · ");
+  c.innerHTML=`
+    <div class="stamp">heard</div>
+    <h2>${s.show}</h2>
+    <div class="host">${s.host}</div>
+    <div class="tags">${tags}</div>
+    <p class="why">${s.learn}</p>
+    <div class="ev">${ev}</div>
+    <div class="start"><div class="k">start with</div><div class="t">${s.start.t}</div><div class="m">${s.start.m}</div></div>
+    <div class="actions">
+      <a class="play${s.play.ytm?"":" alt"}" href="${s.play.url}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>${s.play.label}
+      </a>
+      <button class="heardbtn" data-id="${s.id}">listened</button>
+    </div>`;
+  shelf.appendChild(c);
+});
+function paint(){
+  SHOWS.forEach(s=>{
+    const c=document.getElementById("c-"+s.id);
+    c.classList.toggle("heard",heard.has(s.id));
+    c.querySelector(".heardbtn").textContent=heard.has(s.id)?"heard it":"listened";
+  });
+  const n=heard.size,total=SHOWS.length;
+  document.getElementById("tally").innerHTML= n? `<b>${n}</b> of ${total} heard` : `${total} shows`;
+  document.getElementById("tallyFill").style.width=(n/total*100)+"%";
+}
+document.getElementById("shelf").addEventListener("click",e=>{
+  const b=e.target.closest(".heardbtn"); if(!b)return;
+  const id=b.dataset.id;
+  heard.has(id)?heard.delete(id):heard.add(id);
+  save();paint();
+});
+paint();
+</script>
+</body>
+</html>
